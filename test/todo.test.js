@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { addTodo, toggleTodo, removeTodo, visibleTodos, clearCompleted } from "../src/todo.js";
+import { addTodo, toggleTodo, removeTodo, visibleTodos, clearCompleted, hasCompleted } from "../src/todo.js";
 
 test("addTodo appends a trimmed title with the next id", () => {
   const one = addTodo([], "  Buy milk ");
@@ -42,6 +42,15 @@ test("clearCompleted leaves the list alone when nothing is completed", () => {
   const todos = addTodo(addTodo([], "a"), "b");
   assert.deepEqual(clearCompleted(todos), todos);
   assert.deepEqual(clearCompleted([]), []);
+});
+
+test("hasCompleted is true only while a completed todo exists", () => {
+  const active = addTodo(addTodo([], "a"), "b");
+  assert.equal(hasCompleted(active), false);
+  const mixed = toggleTodo(active, 2);
+  assert.equal(hasCompleted(mixed), true);
+  assert.equal(hasCompleted(clearCompleted(mixed)), false);
+  assert.equal(hasCompleted([]), false);
 });
 
 test("visibleTodos filters by active and done", () => {

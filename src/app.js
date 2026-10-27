@@ -1,4 +1,4 @@
-import { addTodo, toggleTodo, removeTodo, visibleTodos, clearCompleted } from "./todo.js";
+import { addTodo, toggleTodo, removeTodo, visibleTodos, clearCompleted, hasCompleted } from "./todo.js";
 
 let todos = [
   { id: 1, title: "Sign in to Orbi Cloud", done: true },
@@ -66,7 +66,7 @@ function render() {
   for (const button of filters) {
     button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
   }
-  clearButton.disabled = !todos.some((todo) => todo.done);
+  clearButton.disabled = !hasCompleted(todos);
 }
 
 function clearError() {
